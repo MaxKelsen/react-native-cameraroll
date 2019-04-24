@@ -266,13 +266,13 @@ RCT_EXPORT_METHOD(getPhotos:(NSDictionary *)params
           return;
         }
 
-        NSString *const assetMediaTypeLabel = (asset.mediaType == PHAssetMediaTypeVideo
-                                               ? @"video"
-                                               : (asset.mediaType == PHAssetMediaTypeImage
-                                                  ? @"image"
-                                                  : (asset.mediaType == PHAssetMediaTypeAudio
-                                                     ? @"audio"
-                                                     : @"unknown")));
+        // NSString *const assetMediaTypeLabel = (asset.mediaType == PHAssetMediaTypeVideo
+        //                                        ? @"video"
+        //                                        : (asset.mediaType == PHAssetMediaTypeImage
+        //                                           ? @"image"
+        //                                           : (asset.mediaType == PHAssetMediaTypeAudio
+        //                                              ? @"audio"
+        //                                              : @"unknown")));
         CLLocation *const loc = asset.location;
 
         // A note on isStored: in the previous code that used ALAssets, isStored
