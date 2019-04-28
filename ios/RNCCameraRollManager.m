@@ -231,17 +231,19 @@ RCT_EXPORT_METHOD(getPhotos:(NSDictionary *)params
           return; // skip until we get to the first one
         }
 
+        NSString *const extension = [asset valueForKey:@"uniformTypeIdentifier"];
+
         // Get underlying resources of an asset - this includes files as well as details about edited PHAssets
-        NSArray<PHAssetResource *> *const assetResources = [PHAssetResource assetResourcesForAsset:asset];
-        if (![assetResources firstObject]) {
-          return;
-        }
-
-        PHAssetResource *const _Nonnull resource = [assetResources firstObject];
-        CFStringRef const uti = (__bridge CFStringRef _Nonnull)(resource.uniformTypeIdentifier);
-        NSString *const mimeType = (NSString *)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType));
-
         if ([mimeTypes count] > 0) {
+          NSArray<PHAssetResource *> *const assetResources = [PHAssetResource assetResourcesForAsset:asset];
+          if (![assetResources firstObject]) {
+            return;
+          }
+
+          PHAssetResource *const _Nonnull resource = [assetResources firstObject];
+          CFStringRef const uti = (__bridge CFStringRef _Nonnull)(resource.uniformTypeIdentifier);
+          NSString *const mimeType = (NSString *)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType));
+
           BOOL __block mimeTypeFound = NO;
           [mimeTypes enumerateObjectsUsingBlock:^(NSString * _Nonnull mimeTypeFilter, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([mimeType isEqualToString:mimeTypeFilter]) {
@@ -284,7 +286,7 @@ RCT_EXPORT_METHOD(getPhotos:(NSDictionary *)params
         // Note that Android also does not return the `isStored` field at all.
         [assets addObject:@{
            @"node": @{
-             @"type": mimeType, // TODO: switch to mimeType?
+             @"type": extension, // TODO: switch to mimeType?
              @"group_name": [assetCollection localizedTitle],
              @"image": @{
                  @"uri": uri,
